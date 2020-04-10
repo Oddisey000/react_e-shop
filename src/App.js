@@ -1,13 +1,19 @@
 import React from 'react';
-import './App.css';
+
+// Import third party's components
+import { Route, Switch } from 'react-router-dom';
 
 // Import the components
 import HomePage from './components/home-page/home-page.component';
+import ShopPage from './components/shop-page/shop-page.component';
 
 function App() {
   return (
     <div className="App">
-      <HomePage />
+      <Switch>
+        <Route exact path="/" component={HomePage} />
+        <Route path="/shop" component={ShopPage} />
+      </Switch>
     </div>
   );
 }

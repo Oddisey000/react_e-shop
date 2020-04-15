@@ -8,7 +8,7 @@ import Header from './components/header/header.component';
 import HomePage from './components/home-page/home-page.component';
 import ShopPage from './components/shop-page/shop-page.component';
 import AuthPage from './components/auth-page/auth.component';
-import { auth } from './firebase/firebase.utils';
+import { auth, createUserProfileDocument } from './firebase/firebase.utils';
 
 class App extends React.Component {
   constructor() {
@@ -24,8 +24,22 @@ class App extends React.Component {
 
   // Check if firebase has logged in current user and make log in automaticaly
   componentDidMount() {
-    this.unsubscribeFromAuth = auth.onAuthStateChanged(user => {
-      this.setState({ currentUser: user });
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
+      if (userAuth) {
+        const userRef = await createUserProfileDocument(userAuth);
+        userRef.onSnapshot(snapShot => {
+          this.setState({
+            currentUser: {
+              id: snapShot.id,
+              currentUser: snapShot.data().displayName,
+              ...snapShot.data() // All the user data
+            }
+          })
+        });
+      }
+
+      // If there is no logged in user in firebase, then userAuth will be null
+      this.setState({ currentUser: userAuth });
     });
   }
 

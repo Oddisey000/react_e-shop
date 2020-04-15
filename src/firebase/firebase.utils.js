@@ -26,5 +26,37 @@ const provider = new firebase.auth.GoogleAuthProvider();
 // For google pop up window (sign-in and sign-up)
 provider.setCustomParameters({ prompt: 'select_account' });
 
+// A function wich will create new user
+export const createUserProfileDocument = async(userAuth, additionalData) => {
+  if (!userAuth) return;
+
+  // Try to send new user's data to firebase and look at the response
+  const userRef = firestore.doc(`users/${userAuth.uid}`);
+  const resSnapShot = await userRef.get();
+
+  // If there is no data - create new user
+  if (!resSnapShot.exists) {
+    // Get required data from userAuth object
+    const { displayName, email } = userAuth;
+    const createDate = new Date();
+
+    // Write user's data to DB asyncronously
+    try {
+      // Create new object
+      await userRef.set({
+        displayName,
+        email,
+        createDate,
+        ...additionalData
+      })
+    } catch(error) {
+      console.log('error creating user', error.message);
+    }
+  }
+
+  // Get user's data for future use in the application
+  return userRef;
+}
+
 export const signInWithGoogle = () => auth.signInWithPopup(provider);
 export default firebase;

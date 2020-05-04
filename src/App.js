@@ -1,7 +1,7 @@
 import React from 'react';
 
 // Import third party's components
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 
 // Import the components
 import Header from './components/header/header.component';
@@ -53,12 +53,23 @@ class App extends React.Component {
         <Switch>
           <Route exact path="/" component={HomePage} />
           <Route path="/shop" component={ShopPage} />
-          <Route path="/auth" component={AuthPage} />
+          <Route 
+            exact path="/auth"
+            // Checks if user is authorize, if yes then redirect from authorization page back to home page
+            render={
+              () => this.props.currentUser ? (<Redirect to='/' />) : (<AuthPage />)
+            } 
+          />
         </Switch>
       </div>
     );
   }
 }
+
+// Destructuring data from auth reducer and get value of current user
+const mapStateToProps = ({auth}) => ({
+  currentUser: auth.currentUser
+});
 
 /**
  * Complicated function, the should be unchange,
@@ -69,8 +80,4 @@ const mapDispatchToProps = dispatch => ({
   setCurrentUser: userObj => dispatch(setCurrentUser(userObj))
 });
 
-/**
- * The first parameter in connect function allways will be null,
- * then we receive data from reducer
- */
-export default connect(null, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

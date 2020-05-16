@@ -1,4 +1,6 @@
 .inversed-btn {
+  display: flex;
+  justify-content: center;
   min-width: 165px;
   width: auto;
   height: 50px;
@@ -25,6 +27,18 @@
 
     &:hover {
       background-color: #357ae8;
+      border: none;
+    }
+  }
+
+  &.inverted {
+    background-color: #fff;
+    color: #000;
+    border: none;
+
+    &:hover {
+      background-color: #000;
+      color: #fff;
       border: none;
     }
   }

@@ -4,6 +4,9 @@ import { connect } from 'react-redux';
 import CustomButton from '../../shared/inversed-btn/inversed-btn.component';
 import CartItem from '../cart-item/cart-item.component';
 
+// Reselector imports
+import { createCartItems } from '../../../redux/cart/cart.selectors';
+
 import './cart-dropdown.styles.scss';
 
 const CartDropdown = ({cartItems}) => (
@@ -18,8 +21,8 @@ const CartDropdown = ({cartItems}) => (
 );
 
 // Destructure data, so we can simply return cartItems
-const mapStateToProps = ({ cart: {cartItems} }) => ({
-  cartItems
+const mapStateToProps = state => ({
+  cartItems: createCartItems(state)
 });
 
 export default connect(mapStateToProps)(CartDropdown);

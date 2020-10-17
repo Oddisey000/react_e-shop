@@ -8,11 +8,16 @@ import Header from './components/header/header.component';
 import HomePage from './components/home-page/home-page.component';
 import ShopPage from './components/shop-page/shop-page.component';
 import AuthPage from './components/auth-page/auth.component';
+import CheckoutPage from './components/checkout-page/checkout-page.component';
 import { auth, createUserProfileDocument } from './firebase/firebase.utils';
 
 // Import functions for Redux
 import { connect } from 'react-redux';
 import { setCurrentUser } from './redux/auth/auth.actions';
+
+// Import selectors
+import { createStructuredSelector } from 'reselect';
+import { selectCurrentUser } from './redux/auth/auth.selectors';
 
 class App extends React.Component {
   // Clear log in subscription when app is started
@@ -53,6 +58,7 @@ class App extends React.Component {
         <Switch>
           <Route exact path="/" component={HomePage} />
           <Route path="/shop" component={ShopPage} />
+          <Route exact path="/checkout" component={CheckoutPage} />
           <Route 
             exact path="/auth"
             // Checks if user is authorize, if yes then redirect from authorization page back to home page
@@ -67,8 +73,8 @@ class App extends React.Component {
 }
 
 // Destructuring data from auth reducer and get value of current user
-const mapStateToProps = ({auth}) => ({
-  currentUser: auth.currentUser
+const mapStateToProps = createStructuredSelector({
+  currentUser: selectCurrentUser
 });
 
 /**

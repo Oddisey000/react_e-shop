@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { toggleCartHidden } from '../../../redux/cart/cart.actions';
 
 // Import reselect stuff
+import { createStructuredSelector } from 'reselect';
 import { selectCartItemsCount } from '../../../redux/cart/cart.selectors';
 
 import './cart-icon.styles.scss';
@@ -19,8 +20,9 @@ const CartIcon = ({toggleCartHidden, itemCount}) => (
 
 // Function for getting number of items into cart icon
 // Memoize selection optimization are in use (reselect)
-const mapStateToProps = state => ({
-  itemCount: selectCartItemsCount(state)
+// It is always better to create structured selector, because we doesn't know how many selectors we can have
+const mapStateToProps = createStructuredSelector({
+  itemCount: selectCartItemsCount
 });
 
 // Redux functions

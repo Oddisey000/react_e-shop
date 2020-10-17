@@ -10,6 +10,11 @@ import CartDropdown from '../cart/cart-dropdown/cart-dropdown.component';
 // Redux imports
 import { connect } from 'react-redux';
 
+// Reselect imports
+import { createStructuredSelector } from 'reselect';
+import { selectCartHidden } from '../../redux/cart/cart.selectors';
+import { selectCurrentUser } from '../../redux/auth/auth.selectors';
+
 import { auth } from '../../firebase/firebase.utils';
 
 const Header = ({ currentUser, cartHidden }) => (
@@ -38,15 +43,10 @@ const Header = ({ currentUser, cartHidden }) => (
   </div>
 );
 
-/**
- * Destructuring data from the reducer
- * First go root reducer, then property name from combineReducers function
- * The second option is a parameter from the reducer for example 'auth: currentUser'
- * And finaly paste data to mapStateToProps function
- */
-const mapStateToProps = ({auth: {currentUser}, cart: {cartHidden}}) => ({
-  currentUser,
-  cartHidden
+// Using structured selector to select multiple items at once
+const mapStateToProps = createStructuredSelector({
+  currentUser: selectCurrentUser,
+  cartHidden: selectCartHidden
 });
 
 export default connect(mapStateToProps)(Header);

@@ -1,6 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+// Redux imports
+import { toggleCartHidden } from '../../../redux/cart/cart.actions';
+
 import CustomButton from '../../shared/inversed-btn/inversed-btn.component';
 import CartItem from '../cart-item/cart-item.component';
 // Import high order component
@@ -13,7 +16,7 @@ import { createCartItems } from '../../../redux/cart/cart.selectors';
 import './cart-dropdown.styles.scss';
 
 // Checking if cart is empty and give user message or cart items
-const CartDropdown = ({cartItems, history}) => (
+const CartDropdown = ({cartItems, history, dispatch}) => (
   <div className="cart-dropdown">
     <div className="cart-items">
       {cartItems.length ? (
@@ -24,7 +27,9 @@ const CartDropdown = ({cartItems, history}) => (
           <span className="empty-message">Your cart is empty</span> 
         )}
     </div>
-    <CustomButton onClick={() => history.push('/checkout')}>Check out!</CustomButton>
+    <CustomButton 
+      onClick={() => {history.push('/checkout'); dispatch(toggleCartHidden())}}>Check out!
+    </CustomButton>
   </div>
 );
 

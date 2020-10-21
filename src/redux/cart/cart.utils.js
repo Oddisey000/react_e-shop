@@ -15,3 +15,20 @@ export const addItemToCart = (cartItemsArray, newCartItem) => {
   // Return all cart items + newly added item inside one array
   return [...cartItemsArray, {...newCartItem, quantity: 1}];
 }
+
+export const removeItemFromTheCart = (cartItemsArray, cartItemToRemove) => {
+  // Find exact id of the item from cart items array
+  const cartItem = cartItemsArray.find(cartItem => cartItem.id === cartItemToRemove.id);
+
+  // Delete if quantity of this cart item is 1
+  if (cartItem.quantity === 1) {
+    // Return all items, but not the one wich user decrease below 1
+    return cartItemsArray.filter(item => item.id !== cartItemToRemove.id);
+  }
+
+  return cartItemsArray.map(
+    cartItem => cartItem.id === cartItemToRemove.id
+    ? {...cartItem, quantity: cartItem.quantity - 1} // If looked item in the array decrease quantity by 1
+    : cartItem // Return all other items unchange
+  );
+}

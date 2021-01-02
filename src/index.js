@@ -6,10 +6,11 @@ import 'react-app-polyfill/stable';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
+import { PersistGate } from 'redux-persist/integration/react';
 
 // Implement Redux
 import { Provider } from 'react-redux';
-import store from './redux/root.store';
+import { store, persistor } from './redux/root.store';
 
 // Import fonts for the project and other styles
 import './index.css';
@@ -20,9 +21,11 @@ import * as serviceWorker from './serviceWorker';
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
-      <React.StrictMode>
-        <App />
-      </React.StrictMode>
+      <PersistGate persistor={persistor}>
+        <React.StrictMode>
+          <App />
+        </React.StrictMode>
+      </PersistGate>
     </BrowserRouter>
   </Provider>,
   document.getElementById('root')
